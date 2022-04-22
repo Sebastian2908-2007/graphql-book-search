@@ -28,6 +28,7 @@ type Query {
 }
 
 type Mutation {
+    login(email: String!, password: String!): Authorize
     addUser(username: String!, email: String!, password: String!): Authorize
 }
 `;

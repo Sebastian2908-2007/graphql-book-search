@@ -23,6 +23,20 @@ const resolvers = {
            // return what is called an authorize type in the "typedef" for this mutation
            return {token, user}; 
        },
+       login: async (parent,{email,password}) => {
+           const user = await User.findOne({email})
+           if(!user) {
+               throw new AuthenticationError('incorrect credentials');
+           }
+           const correctPw = await user.isCorrectPassword(password);
+
+           if(!correctPw) {
+               throw new AuthenticationError('incorrect credentials');
+           }
+           const token = signToken(user);
+      // this is considered the authorize type in "typeDefs"
+           return {user,token}
+       },
     }
 };
 
