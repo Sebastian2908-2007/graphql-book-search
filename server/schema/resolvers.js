@@ -17,7 +17,7 @@ const resolvers = {
     },
     Mutation: {
        addUser: async (parent,args) => {
-           const user = User.create(args);
+           const user = await User.create(args);
            // create json web token
            const token = signToken(user);
            // return what is called an authorize type in the "typedef" for this mutation
