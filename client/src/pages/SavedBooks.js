@@ -7,8 +7,7 @@ import { DELETE_BOOK } from '../utils/mutations';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks =  () => {
-  // use this use state to re render after delete
-  //const [userInfo,setUserInfo] = useState([])
+ 
 
   const [deleteBook,{err}] = useMutation(DELETE_BOOK, {
     update(cache, { data: {  deleteBook } } ) {
@@ -21,6 +20,7 @@ const SavedBooks =  () => {
         });
       } catch (e) {
         console.error(e);
+        console.log(err)
       }
     }
   }) ;
@@ -48,26 +48,22 @@ const SavedBooks =  () => {
       variables: { bookId }
       });
 
-      if (err) {
+      if (!response) {
         throw new Error('something went wrong!');
       }
 
-      //setUserInfo(response);
-      //console.log(userInfo);
+    
      
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {
-      //console.error(err);
+      console.error(err);
     }
   };
 
-  // if data isn't here yet, say so
-  /*if (!userDataLength) {
-    return <h2>LOADING...</h2>;
-  }*/
 
-console.log(userData);
+
+//console.log(userData);
   return (
     <>
       <Jumbotron fluid className='text-light bg-dark'>
