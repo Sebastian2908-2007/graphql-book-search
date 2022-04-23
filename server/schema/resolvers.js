@@ -37,6 +37,29 @@ const resolvers = {
       // this is considered the authorize type in "typeDefs"
            return {user,token}
        },
+       saveBook: async (parent,{bookToSave},context) => {
+           if(context.user) { 
+           const userAddBook = await User.findOneAndUpdate(
+               { _id: context.user._id },
+               { $addToSet: { savedBooks: bookToSave } },
+               { new: true }
+           ).populate('savedBooks');
+           return userAddBook;
+       }
+       throw new AuthenticationError('you need to be logged in first');
+      
+       },
+       deleteBook: (parent,{bookId},context) => {
+           if(context.user) {
+               const userDeleteBook = User.findOneAndUpdate(
+                   {_id: context.user._id},
+                   {$pull:{ savedBooks: {bookId: bookId }}},
+                   {new: true}
+               ).populate('savedBooks');
+               return userDeleteBook;
+           }
+           throw new AuthenticationError('you need to be logged in first');
+       }
     }
 };
 

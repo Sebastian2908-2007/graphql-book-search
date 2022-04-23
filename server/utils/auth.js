@@ -38,16 +38,6 @@ module.exports = {
 };
 
 /**
- * 
- * {
-  "data": {
-    "addUser": {
-      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJuYW1lIjoibGltbXkiLCJlbWFpbCI6ImxpbW15QGdtYWlsLmNvbSIsIl9pZCI6IjYyNjMwYjliOTJiZTMzNDk1NGZmZjg0MSJ9LCJpYXQiOjE2NTA2NTgyMDMsImV4cCI6MTY1MDY2NTQwM30.6WzkWV7UrvoxIsECGfb_Tj8ewPtCao1dehigAQ7i_rA",
-      "user": {
-        "email": "limmy@gmail.com",
-        "username": "limmy"
-      }
-    }
-  }
-}
+ 
+ 
  */
