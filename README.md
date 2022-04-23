@@ -54,7 +54,7 @@ sebastiancrespin279@gmail.com
 https://still-tundra-85694.herokuapp.com/
 
 ## Sample Image
-
+![Screenshot (245)](https://user-images.githubusercontent.com/77297220/164945917-1f0b0a61-e9cb-4c3d-b0aa-83e4331609b3.png)
 
 ## License
 ISC 
