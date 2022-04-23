@@ -1,21 +1,38 @@
 import { useQuery } from '@apollo/client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
-
+import { useMutation } from '@apollo/client';
 import { QUERY_ME } from '../utils/queries';
-import {  deleteBook } from '../utils/API';
-import Auth from '../utils/auth';
+import { DELETE_BOOK } from '../utils/mutations';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks =  () => {
+  // use this use state to re render after delete
+  //const [userInfo,setUserInfo] = useState([])
+
+  const [deleteBook,{err}] = useMutation(DELETE_BOOK, {
+    update(cache, { data: {  deleteBook } } ) {
+      try {
+        const { getMe } = cache.readQuery({ query: QUERY_ME });
+        cache.writeQuery({
+          query: QUERY_ME,
+          data: {getMe: {...getMe,savedBooks: [...getMe.savedBooks, deleteBook] } }
+          
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }) ;
+
   
   const {data: userData,loading,error} =  useQuery(QUERY_ME);
   
-  
+  // it seems the below two lines were essential in makinging this all work note to future self for useQuery
   if (loading) return 'Loading...';
   if (error) return `Error! ${error.message}`;
   
-  
+ 
   
   
 
@@ -24,34 +41,32 @@ const SavedBooks =  () => {
   
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  /*const handleDeleteBook = async (bookId) => {
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
-
-    if (!token) {
-      return false;
-    }
-
+  const handleDeleteBook = async (bookId) => {
+   
     try {
-      const response = await deleteBook(bookId, token);
+      const response = await deleteBook({
+      variables: { bookId }
+      });
 
-      if (!response.ok) {
+      if (err) {
         throw new Error('something went wrong!');
       }
 
-      const updatedUser = await response.json();
-      setUserData(updatedUser);
+      //setUserInfo(response);
+      //console.log(userInfo);
+     
       // upon success, remove book's id from localStorage
       removeBookId(bookId);
     } catch (err) {
-      console.error(err);
+      //console.error(err);
     }
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
+  /*if (!userDataLength) {
     return <h2>LOADING...</h2>;
-  }
-*/
+  }*/
+
 console.log(userData);
   return (
     <>
@@ -75,7 +90,7 @@ console.log(userData);
                   <Card.Title>{book.title}</Card.Title>
                   <p className='small'>Authors: {book.authors}</p>
                   <Card.Text>{book.description}</Card.Text>
-                  <Button className='btn-block btn-danger' >
+                  <Button className='btn-block btn-danger' onClick={() => handleDeleteBook(book.bookId)}>
                     Delete this Book!
                   </Button>
                 </Card.Body>

@@ -29,3 +29,20 @@ export const LOGIN = gql`
       }
   }
 `;
+
+export const DELETE_BOOK = gql`
+ mutation deleteBook($bookId: String) {
+     deleteBook(bookId: $bookId) {
+         username
+         email
+         savedBooks {
+             authors
+             description
+             image
+              link
+         }
+             
+         
+     }
+ }
+`;
